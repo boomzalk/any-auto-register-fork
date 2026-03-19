@@ -122,42 +122,45 @@ class MyPlatform(BasePlatform):
 | CF Worker | 自动生成 | 自建 Cloudflare Worker 邮箱 |
 
 **## gpt账号json单独导出**
+
 export_any_auto_register_accounts.py。
 
-  它会直接读取 account_manager.db，导出：
+   1. 导出全部账号为 CSV
 
-  - 基础字段：email、password、status、cashier_url、created_at 等
-  - extra_json 里的常用 token 字段：access_token、refresh_token、id_token、
-    session_token、workspace_id、cookies 等
+  python .\export_any_auto_register_accounts.py --db .\account_manager.db
 
-  你在服务器上这样用就行。
+  2. 导出为 JSON
 
-  导出全部账号到 CSV：
+  python .\export_any_auto_register_accounts.py --db .\account_manager.db
+  --format json --output .\chatgpt_accounts.json
 
-  python export_any_auto_register_accounts.py --db /root/any-auto-register/
-  account_manager.db
+  3. 只导出 chatgpt 且状态为 registered
 
-  只导出 ChatGPT 账号到 JSON：
+  python .\export_any_auto_register_accounts.py --db .\account_manager.db
+  --platform chatgpt --status registered --format json --output .
+  \chatgpt_accounts.json
 
-  python export_any_auto_register_accounts.py \
-    --db /root/any-auto-register/account_manager.db \
-    --platform chatgpt \
-    --format json \
-    --output chatgpt_accounts.json
+  4. 导出成 CLIProxyAPI 可用的 auth 文件
 
-  只导出 trae 且 registered 的账号到 CSV：
+  python .\export_any_auto_register_accounts.py --db .\account_manager.db
+  --platform chatgpt --status registered --format cliproxyapi --output .
+  \CLIProxyAPI_repo\auths
 
-  python export_any_auto_register_accounts.py \
-    --db /root/any-auto-register/account_manager.db \
-    --platform trae \
-    --status registered \
-    --output trae_registered.csv
+  5. 如果你已经有 chatgpt_accounts.json，再转成 CLIProxyAPI 格式
 
-  说明：
+  python .\export_any_auto_register_accounts.py --input-json .
+  \chatgpt_accounts.json --format cliproxyapi --output .\CLIProxyAPI_repo\auths 
+  几个关键点：
 
-  - 默认导出格式是 csv
-  - 不写 --output 会自动生成带时间戳的文件名
-  - chatgpt 如果你后面要继续用 token，建议导出 json，因为字段更完整
+  - --db 和 --input-json 只能二选一，export_any_auto_register_accounts.py:73。
+  - 不写 --format 时默认是 csv；不写 --output 时会自动生成时间戳文件名，
+    export_any_auto_register_accounts.py:309。
+  - cliproxyapi 模式是一账号一个 JSON；如果你把 --output 写成单个 .json 文件，那
+    只能导出 1 个账号，export_any_auto_register_accounts.py:369。
+  - 记录里如果缺少 email / id_token / access_token / refresh_token /
+    account_id，会被跳过，export_any_auto_register_accounts.py:330。
+  - 你仓库里的 CLIProxyAPI_repo/docker-compose.yml:26 已经把 ./auths 挂到容器认
+    证目录，所以导到 .\CLIProxyAPI_repo\auths 是对的。
 
 
 
