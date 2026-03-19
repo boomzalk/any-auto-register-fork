@@ -121,6 +121,47 @@ class MyPlatform(BasePlatform):
 | DuckMail | 自动生成 | 自动创建随机账号 |
 | CF Worker | 自动生成 | 自建 Cloudflare Worker 邮箱 |
 
+**## gpt账号json单独导出**
+export_any_auto_register_accounts.py。
+
+  它会直接读取 account_manager.db，导出：
+
+  - 基础字段：email、password、status、cashier_url、created_at 等
+  - extra_json 里的常用 token 字段：access_token、refresh_token、id_token、
+    session_token、workspace_id、cookies 等
+
+  你在服务器上这样用就行。
+
+  导出全部账号到 CSV：
+
+  python export_any_auto_register_accounts.py --db /root/any-auto-register/
+  account_manager.db
+
+  只导出 ChatGPT 账号到 JSON：
+
+  python export_any_auto_register_accounts.py \
+    --db /root/any-auto-register/account_manager.db \
+    --platform chatgpt \
+    --format json \
+    --output chatgpt_accounts.json
+
+  只导出 trae 且 registered 的账号到 CSV：
+
+  python export_any_auto_register_accounts.py \
+    --db /root/any-auto-register/account_manager.db \
+    --platform trae \
+    --status registered \
+    --output trae_registered.csv
+
+  说明：
+
+  - 默认导出格式是 csv
+  - 不写 --output 会自动生成带时间戳的文件名
+  - chatgpt 如果你后面要继续用 token，建议导出 json，因为字段更完整
+
+
+
+
 ## License
 
 MIT License — 仅供学习研究，禁止商业使用。
