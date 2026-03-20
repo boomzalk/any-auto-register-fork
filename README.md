@@ -121,8 +121,8 @@ class MyPlatform(BasePlatform):
 | DuckMail | 自动生成 | 自动创建随机账号 |
 | CF Worker | 自动生成 | 自建 Cloudflare Worker 邮箱 |
 
-**## gpt账号json单独导出**
-
+## gpt账号json单独导出
+```bash
 export_any_auto_register_accounts.py。
 
    1. 导出全部账号为 CSV
@@ -161,11 +161,12 @@ export_any_auto_register_accounts.py。
     account_id，会被跳过，export_any_auto_register_accounts.py:330。
   - 你仓库里的 CLIProxyAPI_repo/docker-compose.yml:26 已经把 ./auths 挂到容器认
     证目录，所以导到 .\CLIProxyAPI_repo\auths 是对的。
-
+```
 
 
 
 -------------------------------------------------
+```bash
 sudo apt update
 
 sudo apt install -y git curl build-essential python3 python3-venv python3-pippython3-dev libffi-dev libssl-dev tmux
@@ -223,7 +224,7 @@ http://你的服务器IP:5173
 不要继续走 laoudo 空邮箱那条路径。
 
 -------------------------------------------------
-
+```
 
 
 
