@@ -165,6 +165,55 @@ export_any_auto_register_accounts.py。
 
 
 
+-------------------------------------------------
+sudo apt update
+sudo apt install -y git curl build-essential python3 python3-venv python3-pip
+python3-dev libffi-dev libssl-dev tmux
+
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt install -y nodejs
+
+node -v
+npm -v
+python3 --version
+
+cd /opt
+sudo git clone https://github.com/boomzalk/any-auto-register-fork.git
+cd /opt/any-auto-register-fork
+
+python3 -m venv .venv
+source .venv/bin/activate
+pip install --upgrade pip setuptools wheel
+pip install -r requirements.txt
+pip install quart rich patchright camoufox cbor2 jwcrypto
+
+cd /opt/any-auto-register-fork/frontend
+npm ci --legacy-peer-deps
+
+然后启动后端：
+
+cd /opt/any-auto-register-fork
+source .venv/bin/activate
+uvicorn main:app --host 127.0.0.1 --port 8000 --reload
+
+再开一个终端启动前端：
+
+cd /opt/any-auto-register-fork/frontend
+npm run dev -- --host 0.0.0.0 --port 5173
+
+访问：
+
+http://你的服务器IP:5173
+
+如果你要用 DuckMail
+进网页 Settings，把 mail_provider 改成 duckmail，然后保存。
+不要继续走 laoudo 空邮箱那条路径。
+
+-------------------------------------------------
+
+
+
+
 ## License
 
 MIT License — 仅供学习研究，禁止商业使用。
